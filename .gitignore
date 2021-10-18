@@ -1,1 +1,4 @@
-lobby-home/
+**/target/
+tmp
+SyndicateLobby.iml
+base-docker/lobby-home/
