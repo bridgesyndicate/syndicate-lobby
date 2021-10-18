@@ -1,0 +1,10 @@
+name: Kits
+version: ${project.version}
+main: gg.bridgesyndicate.kits.Kits
+api-version: 1.8
+authors: [ ep1cpr0gamer, vice9]
+
+commands:
+  kit:
+    description: Configure your hotbar
+    usage: /kit

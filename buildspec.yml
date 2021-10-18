@@ -1,0 +1,29 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      java: corretto8
+  pre_build:
+    commands:
+      - REPOSITORY_HOST=595508394202.dkr.ecr.us-west-2.amazonaws.com
+      - REPOSITORY_URI=$REPOSITORY_HOST/syn-lobby
+      - aws ecr get-login-password  | docker login --username AWS --password-stdin $REPOSITORY_HOST
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+  build:
+    commands:
+      - mvn clean package -P package-all
+      - mkdir tmp
+      - find . -type f -path \*target\* -name \*jar -exec cp -p {} tmp/ \;
+      - tar -C tmp -cvf ./plugins.tar .
+      - aws s3 cp s3://syndicate-plugins-artifacts/jar-deps/jar-deps-v02.tar jar-deps.tar
+      - docker build -t $REPOSITORY_URI:latest .
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI:latest
+artifacts:
+  files:
+    - "**/target/*"
+  discard-paths: yes

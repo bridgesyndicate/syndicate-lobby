@@ -1,0 +1,9 @@
+--- ./server.properties	2021-09-21 23:32:10.000000000 -0700
++++ /tmp/foo	2021-10-17 21:29:57.883764652 -0700
+@@ -1,5 +1,5 @@
+ # lobby
+-online-mode=false
++online-mode=true
+ spawn-protection=0
+ generator-settings=
+ force-gamemode=false
