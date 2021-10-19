@@ -15,6 +15,7 @@
             <id>package-all</id>
             <modules>
                 <module>Kits</module>
+                <module>NoThrow</module>
             </modules>
         </profile>
     </profiles>

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Kits/Kits.iml" filepath="$PROJECT_DIR$/Kits/Kits.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NoThrow/NoThrow.iml" filepath="$PROJECT_DIR$/NoThrow/NoThrow.iml" />
       <module fileurl="file://$PROJECT_DIR$/SyndicateLobby.iml" filepath="$PROJECT_DIR$/SyndicateLobby.iml" />
     </modules>
   </component>
