@@ -1,6 +1,6 @@
 FROM 595508394202.dkr.ecr.us-west-2.amazonaws.com/syn-lobby
-WORKDIR /app/lobby-home
 RUN apt-get update && apt-get install -y patch
+WORKDIR /app/lobby-home
 ADD scripts/no-bungee.server.properties.diff .
 ADD scripts/no-bungee.spigot.yml.diff .
 RUN patch -p1 < ./no-bungee.spigot.yml.diff

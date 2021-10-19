@@ -1,5 +1,7 @@
 package gg.bridgesyndicate.kits;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -8,10 +10,33 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class BridgeInventory {
 
     private static final short LIGHT_GRAY_TERRACOTTA = 8;
+
+    public static String convertInventorySlotsToJSON(Player player) {
+        Iterator<ItemStack> itemStackIterator = player.getInventory().iterator();
+        HashMap<String, Integer> itemLocationHashMap = new HashMap<String, Integer>();
+        int idx = 0;
+        while (itemStackIterator.hasNext()){
+            ItemStack itemStack = itemStackIterator.next();
+            if (itemStack != null)
+                itemLocationHashMap.put(itemStack.getType().toString(), idx);
+            idx++;
+        }
+        String returnValue = "";
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            returnValue = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(itemLocationHashMap);
+        } catch (JsonProcessingException e) {
+            System.out.println("Error. Could not serialize the inventory layout.");
+            e.printStackTrace();
+        }
+        return(returnValue);
+    }
 
     public static void setDefaultInventory(Player player) {
         // HOTBAR
