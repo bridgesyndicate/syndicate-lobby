@@ -21,10 +21,17 @@ public class BridgeInventory {
         Iterator<ItemStack> itemStackIterator = player.getInventory().iterator();
         HashMap<String, Integer> itemLocationHashMap = new HashMap<String, Integer>();
         int idx = 0;
+        int blockCounter = 0;
         while (itemStackIterator.hasNext()){
             ItemStack itemStack = itemStackIterator.next();
-            if (itemStack != null)
-                itemLocationHashMap.put(itemStack.getType().toString(), idx);
+            if (itemStack != null) {
+                String key = itemStack.getType().toString();
+                if (key.equals("STAINED_CLAY")) {
+                    key = key.concat(Integer.toString(blockCounter));
+                    blockCounter++;
+                }
+                itemLocationHashMap.put(key, idx);
+            }
             idx++;
         }
         String returnValue = "";
@@ -39,6 +46,8 @@ public class BridgeInventory {
     }
 
     private static int getInventoryLocation(HashMap<String, Integer> map, String key, int defaultValue){
+        if (map == null)
+            return defaultValue;
         return ( map.get(key) != null ) ? map.get(key) : defaultValue;
     }
 
@@ -49,9 +58,8 @@ public class BridgeInventory {
             ObjectMapper mapper = new ObjectMapper();
             kitLayoutMap = mapper.readValue(playerKitJson, HashMap.class);
             returnValue = "your custom";
-        } catch (JsonProcessingException e) {
+        } catch (IllegalArgumentException | JsonProcessingException e) {
             System.out.println("Error. Cannot deserialize players saved layout. Will use defaults.");
-            e.printStackTrace();
         }
 
         // HOTBAR
@@ -99,10 +107,10 @@ public class BridgeInventory {
         blocks1.setDurability(LIGHT_GRAY_TERRACOTTA);
 
         player.getInventory().setItem(
-                getInventoryLocation(kitLayoutMap, "LIGHT_GRAY_TERRACOTTA", 3),
+                getInventoryLocation(kitLayoutMap, "STAINED_CLAY0", 3),
                 blocks1);
         player.getInventory().setItem(
-                getInventoryLocation(kitLayoutMap, "LIGHT_GRAY_TERRACOTTA", 4),
+                getInventoryLocation(kitLayoutMap, "STAINED_CLAY1", 4),
                 blocks1);
 
 

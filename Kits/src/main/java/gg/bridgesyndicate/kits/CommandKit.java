@@ -46,10 +46,9 @@ public class CommandKit implements CommandExecutor {
                 }
                 return true;
             } else {
-                player.sendMessage(ChatColor.GRAY + "saving kit.");
                 String inventoryLayoutJson = BridgeInventory.convertInventorySlotsToJSON(player);
                 uploadJsonToS3(inventoryLayoutJson, player.getUniqueId());
-                player.sendMessage(ChatColor.GRAY + "saved.");
+                player.sendMessage(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Kit saved!");
                 player.getInventory().clear();
                 return true;
             }
@@ -63,7 +62,12 @@ public class CommandKit implements CommandExecutor {
     }
 
     private String getKitJsonFromS3(UUID uniqueId) {
-        S3Object s3Object = s3client.getObject(BUCKET_NAME, objectNameFromPlayerUUID(uniqueId));
+        S3Object s3Object;
+        try {
+            s3Object = s3client.getObject(BUCKET_NAME, objectNameFromPlayerUUID(uniqueId));
+        } catch (Exception e) {
+            return null;
+        }
         S3ObjectInputStream inputStream = s3Object.getObjectContent();
         String text = new BufferedReader(
                 new InputStreamReader(inputStream, StandardCharsets.UTF_8))
