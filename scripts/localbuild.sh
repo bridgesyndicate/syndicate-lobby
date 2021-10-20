@@ -14,6 +14,7 @@ then
     docker build -t $IMAGE:$TAG -f scripts/Dockerfile.nobungee .
 fi
 docker run \
+       -e SYNDICATE_ENV=development \
        -e AWS_REGION=us-west-2 \
        -e AWS_ACCESS_KEY_ID=$DEV_AWS_ACCESS_KEY_ID \
        -e AWS_SECRET_KEY=$DEV_AWS_SECRET_KEY \

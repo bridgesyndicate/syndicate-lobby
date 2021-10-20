@@ -38,7 +38,22 @@ public class BridgeInventory {
         return(returnValue);
     }
 
-    public static void setDefaultInventory(Player player) {
+    private static int getInventoryLocation(HashMap<String, Integer> map, String key, int defaultValue){
+        return ( map.get(key) != null ) ? map.get(key) : defaultValue;
+    }
+
+    public static String setDefaultInventory(Player player, String playerKitJson) {
+        HashMap<String, Integer> kitLayoutMap = null;
+        String returnValue = "the default";
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            kitLayoutMap = mapper.readValue(playerKitJson, HashMap.class);
+            returnValue = "your custom";
+        } catch (JsonProcessingException e) {
+            System.out.println("Error. Cannot deserialize players saved layout. Will use defaults.");
+            e.printStackTrace();
+        }
+
         // HOTBAR
         player.getInventory().clear();
         ItemStack ironSword = new ItemStack(Material.IRON_SWORD);
@@ -46,8 +61,9 @@ public class BridgeInventory {
         ItemMeta itemMetaSword = ironSword.getItemMeta();
         itemMetaSword.spigot().setUnbreakable(true);
         ironSword.setItemMeta(itemMetaSword);
-
-        player.getInventory().setItem(0, ironSword);
+        player.getInventory().setItem(
+                getInventoryLocation(kitLayoutMap, "IRON_SWORD", 0),
+                ironSword);
 
         ItemStack bow = new ItemStack(Material.BOW);
 
@@ -64,24 +80,37 @@ public class BridgeInventory {
         itemMetaBow.spigot().setUnbreakable(true);
         bow.setItemMeta(itemMetaBow);
 
-        player.getInventory().setItem(1, bow);
+        player.getInventory().setItem(
+                getInventoryLocation(kitLayoutMap, "BOW", 1),
+                bow);
+
         ItemStack pick = new ItemStack(Material.DIAMOND_PICKAXE);
         ItemMeta itemMetaPick = pick.getItemMeta();
         itemMetaPick.spigot().setUnbreakable(true);
         itemMetaPick.addEnchant(Enchantment.DIG_SPEED, 2, false);
         pick.setItemMeta(itemMetaPick);
-        player.getInventory().setItem(2, pick);
+
+        player.getInventory().setItem(
+                getInventoryLocation(kitLayoutMap, "DIAMOND_PICKAXE", 2),
+                pick);
 
         ItemStack blocks1 = new ItemStack(Material.STAINED_CLAY, 64);
 
         blocks1.setDurability(LIGHT_GRAY_TERRACOTTA);
 
-        player.getInventory().setItem(3, blocks1);
-        player.getInventory().setItem(4, blocks1);
+        player.getInventory().setItem(
+                getInventoryLocation(kitLayoutMap, "LIGHT_GRAY_TERRACOTTA", 3),
+                blocks1);
+        player.getInventory().setItem(
+                getInventoryLocation(kitLayoutMap, "LIGHT_GRAY_TERRACOTTA", 4),
+                blocks1);
+
 
         ItemStack gaps = new ItemStack(Material.GOLDEN_APPLE, 8);
 
-        player.getInventory().setItem(5, gaps);
+        player.getInventory().setItem(
+                getInventoryLocation(kitLayoutMap, "GOLDEN_APPLE", 5),
+                gaps);
 
         ItemStack arrow = new ItemStack(Material.ARROW, 1);
 
@@ -93,6 +122,10 @@ public class BridgeInventory {
         itemMetaArrow.setLore(arrowLore);
 
         arrow.setItemMeta(itemMetaArrow);
-        player.getInventory().setItem(8, arrow);
+
+        player.getInventory().setItem(
+                getInventoryLocation(kitLayoutMap, "ARROW", 8),
+                arrow);
+        return(returnValue);
     }
 }

@@ -14,9 +14,8 @@ phases:
     commands:
       - mvn clean package -P package-all
       - mkdir tmp
-      - find . -type f -path \*target\* -name \*jar -exec cp -p {} tmp/ \;
+      - find . -type f -path \*target\* -name \*jar -not -name original\* -exec cp -p {} tmp/ \;
       - tar -C tmp -cvf ./plugins.tar .
-      - aws s3 cp s3://syndicate-plugins-artifacts/jar-deps/jar-deps-v02.tar jar-deps.tar
       - docker build -t $REPOSITORY_URI:latest .
   post_build:
     commands:
