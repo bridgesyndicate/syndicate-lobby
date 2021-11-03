@@ -6,12 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="LobbyRules" />
         <module name="NoThrow" />
         <module name="Kits" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Kits" target="1.8" />
+      <module name="LobbyRules" target="1.8" />
       <module name="NoThrow" target="1.8" />
       <module name="SyndicateLobby" target="1.5" />
     </bytecodeTargetLevel>

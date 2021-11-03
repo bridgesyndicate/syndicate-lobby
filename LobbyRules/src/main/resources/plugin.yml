@@ -1,0 +1,3 @@
+name: LobbyRules
+version: ${project.version}
+main: gg.bridgesyndicate.lobbyrules.LobbyRules
