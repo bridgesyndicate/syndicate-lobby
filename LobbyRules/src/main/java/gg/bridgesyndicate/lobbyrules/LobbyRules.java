@@ -1,6 +1,8 @@
 package gg.bridgesyndicate.lobbyrules;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,10 +11,14 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class LobbyRules extends JavaPlugin implements Listener {
+
+    private static int VOID_HEIGHT = 10;
 
     @Override
     public void onEnable() {
@@ -22,12 +28,23 @@ public final class LobbyRules extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onWeatherChange(final WeatherChangeEvent e) {
+    private void onPlayerJoin(PlayerJoinEvent event){
+        Player player = event.getPlayer();
+        teleportPlayerToSpawn(player);
+    }
+
+    private void teleportPlayerToSpawn(Player player){
+        Location respawn = new Location(Bukkit.getWorld("world"), -16.5, 65.0, 0.5, 0F, 0F);
+        player.teleport(respawn);
+    }
+
+    @EventHandler
+    private void onWeatherChange(final WeatherChangeEvent e) {
         e.setCancelled(true);
     }
 
     @EventHandler
-    public void foodChangeEvent(final FoodLevelChangeEvent event) {
+    private void foodChangeEvent(final FoodLevelChangeEvent event) {
         if (event.getEntityType() == EntityType.PLAYER) {
             final Player player = (Player) event.getEntity();
             event.setCancelled(true);
@@ -36,22 +53,29 @@ public final class LobbyRules extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void entityDamageEvent(final EntityDamageEvent event) {
+    private void entityDamageEvent(final EntityDamageEvent event) {
         if (event.getEntityType() == EntityType.PLAYER) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onBlockPlaceEvent(BlockPlaceEvent event) {
+    private void onBlockPlaceEvent(BlockPlaceEvent event) {
         event.setCancelled(true);
     }
 
     @EventHandler
-    public void onBlockBreakEvent(BlockBreakEvent event) {
+    private void onBlockBreakEvent(BlockBreakEvent event) {
         event.setCancelled(true);
     }
 
+    @EventHandler
+    private void onPlayerFallIntoVoid(PlayerMoveEvent event){
+        Player player = event.getPlayer();
+        if(player.getLocation().getY() < VOID_HEIGHT){
+            teleportPlayerToSpawn(player);
+        }
+    }
 
     private void setGameRules() {
         Bukkit.getWorld("world").setGameRuleValue("keepInventory", "true");
