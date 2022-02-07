@@ -10,7 +10,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
@@ -66,6 +68,18 @@ public final class LobbyRules extends JavaPlugin implements Listener {
 
     @EventHandler
     private void onBlockBreakEvent(BlockBreakEvent event) {
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    private void onPlayerShootBow(EntityShootBowEvent event){
+        event.setCancelled(true);
+        Player player = (Player) event.getEntity();
+        player.updateInventory();
+    }
+
+    @EventHandler
+    private void onPlayerEat(PlayerItemConsumeEvent event){
         event.setCancelled(true);
     }
 
