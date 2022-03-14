@@ -15,6 +15,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -26,6 +27,7 @@ public final class LobbyRules extends JavaPlugin implements Listener {
     public void onEnable() {
         System.out.println(this.getClass() + " is loading.");
         getServer().getPluginManager().registerEvents(this, this);
+        getServer().getPluginManager().registerEvents(new ChatHandler(),this);
         setGameRules();
     }
 
@@ -33,6 +35,7 @@ public final class LobbyRules extends JavaPlugin implements Listener {
     private void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
         teleportPlayerToSpawn(player);
+        event.setJoinMessage(ChatHandler.getJoinMessage(player.getName()));
     }
 
     private void teleportPlayerToSpawn(Player player){
@@ -89,6 +92,11 @@ public final class LobbyRules extends JavaPlugin implements Listener {
         if(player.getLocation().getY() < VOID_HEIGHT){
             teleportPlayerToSpawn(player);
         }
+    }
+
+    @EventHandler
+    private void onPlayerLeave(PlayerQuitEvent event) {
+        event.setQuitMessage(ChatHandler.getLeaveMessage(event.getPlayer().getName()));
     }
 
     private void setGameRules() {
