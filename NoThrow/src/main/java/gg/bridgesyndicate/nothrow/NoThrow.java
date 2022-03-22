@@ -1,7 +1,5 @@
 package gg.bridgesyndicate.nothrow;
 
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -23,8 +21,12 @@ public final class NoThrow extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onPlayerSplitItem(InventoryClickEvent event) {
+    public void onInventoryClick(InventoryClickEvent event) {
         if (event.isRightClick()) event.setCancelled(true);
+        if (event.isShiftClick()) event.setCancelled(true);
+        if (event.getClickedInventory() != event.getWhoClicked().getInventory()) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler

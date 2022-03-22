@@ -1,7 +1,6 @@
 package gg.bridgesyndicate.lobbyrules;
 
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -36,6 +35,7 @@ public final class LobbyRules extends JavaPlugin implements Listener {
         Player player = event.getPlayer();
         teleportPlayerToSpawn(player);
         event.setJoinMessage(ChatHandler.getJoinMessage(player.getName()));
+
     }
 
     private void teleportPlayerToSpawn(Player player){
