@@ -28,12 +28,15 @@ public final class LobbyRules extends JavaPlugin implements Listener {
         System.out.println(this.getClass() + " is loading.");
         getServer().getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(new ChatHandler(),this);
+        getServer().getPluginManager().registerEvents(new DoubleJumpHandler(), this);
         setGameRules();
     }
 
     @EventHandler
     private void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
+        player.setGameMode(GameMode.SURVIVAL);
+        player.setAllowFlight(true);
         teleportPlayerToSpawn(player);
         event.setJoinMessage(ChatHandler.getJoinMessage(player.getName()));
         player.setGameMode(GameMode.SURVIVAL);
