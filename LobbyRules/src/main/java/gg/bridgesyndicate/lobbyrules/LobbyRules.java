@@ -39,7 +39,6 @@ public final class LobbyRules extends JavaPlugin implements Listener {
         player.setAllowFlight(true);
         teleportPlayerToSpawn(player);
         event.setJoinMessage(ChatHandler.getJoinMessage(player.getName()));
-        player.setGameMode(GameMode.SURVIVAL);
     }
 
     private void teleportPlayerToSpawn(Player player){
