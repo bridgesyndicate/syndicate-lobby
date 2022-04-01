@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class ChatHandler implements Listener {
 
@@ -47,6 +48,15 @@ public class ChatHandler implements Listener {
         response.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
                 BUCKYTOUR_DISCORD_INVITE_LINK));
         player.spigot().sendMessage(response);
+    }
+
+    @EventHandler
+    public void onPreprocessCommand(PlayerCommandPreprocessEvent event) { // TEMPORARY until we fix this with luckperms, and add muting
+        if (       event.getMessage().contains("minecraft")
+                || event.getMessage().contains("me")
+                || event.getMessage().contains("tell")) {
+            event.setCancelled(true);
+        }
     }
 
     private static void broadcastChatMessage(String playerName, String message){
