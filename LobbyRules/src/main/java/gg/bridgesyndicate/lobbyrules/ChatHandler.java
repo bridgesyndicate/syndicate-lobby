@@ -18,7 +18,12 @@ public class ChatHandler implements Listener {
     public static void onPlayerChat(AsyncPlayerChatEvent event) {
         String playerName = event.getPlayer().getName();
         String message = event.getMessage();
-        broadcastChatMessage(playerName, message);
+        boolean badMessage = FilterMessages.containsBlacklistedWords(message);
+        if (badMessage) {
+            event.getPlayer().sendMessage(ChatColor.RED + "Your message was blocked as it may have contained offensive slurs.");
+        } else {
+            broadcastChatMessage(playerName, message);
+        }
         event.setCancelled(true);
     }
 
