@@ -1,6 +1,6 @@
 #!/bin/bash
 set -ve
-VERSION=13
+VERSION=14
 echo version $VERSION
 echo building with the contents of lobby-home
 echo edit if you don\'t have this directory
