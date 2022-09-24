@@ -87,6 +87,7 @@ public class CommandKit implements CommandExecutor {
     }
 
     private void uploadJsonToS3(String inventoryLayoutJson, UUID uniqueId) {
+        System.out.println("Saving inventory layout JSON to: " + BUCKET_NAME);
         s3client.putObject(
                 BUCKET_NAME,
                 objectNameFromPlayerUUID(uniqueId),
